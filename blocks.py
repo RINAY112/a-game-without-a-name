@@ -1,5 +1,7 @@
 import pygame as pg
 
+pg.init()
+
 
 class Block(pg.sprite.Sprite):
     def __init__(self, x, y, *groups):
@@ -39,3 +41,43 @@ class RightWall(Block):
     def __init__(self, x, y, *groups):
         super().__init__(x, y, *groups)
         self.image = RightWall.image
+
+
+class Thorn(pg.sprite.Sprite):
+    image = pg.image.load(r'data\thorn.png').convert_alpha()
+
+    def __init__(self, x, y, *groups):
+        super().__init__(*groups)
+        self.rect = pg.Rect(x, y, 64, 64)
+
+
+class FloorThorn(Thorn):
+    image = Thorn.image
+
+    def __init__(self, x, y, *groups):
+        super().__init__(x, y, *groups)
+        self.image = FloorThorn.image
+
+
+class CeilingThorn(Thorn):
+    image = pg.transform.flip(Thorn.image, False, True)
+
+    def __init__(self, x, y, *groups):
+        super().__init__(x, y, *groups)
+        self.image = CeilingThorn.image
+
+
+class RightThorn(Thorn):
+    image = pg.transform.rotate(Thorn.image, 90)
+
+    def __init__(self, x, y, *groups):
+        super().__init__(x, y, *groups)
+        self.image = RightThorn.image
+
+
+class LeftThorn(Thorn):
+    image = pg.transform.flip(pg.transform.rotate(Thorn.image, 90), True, False)
+
+    def __image__(self, x, y, *groups):
+        super().__init__(x, y, *groups)
+        self.image = LeftImage

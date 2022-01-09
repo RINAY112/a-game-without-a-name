@@ -1,5 +1,7 @@
 import pygame as pg
 
+pg.init()
+
 
 class Character(pg.sprite.Sprite):
     GRAVITY = 9.81 * 64

@@ -1,11 +1,12 @@
 import pygame as pg
 from personages import Hero, Enemy
+from blocks import Floor, Ceiling, RightWall, LeftWall, FloorThorn, CeilingThorn, RightThorn, LeftThorn
 
 pg.init()
 SCREEN_SIZE = 1920, 1080
 screen = pg.display.set_mode(SCREEN_SIZE)
 
-# bg_image = pg.image.load(r'data\bg_image.png')
+bg_image = pg.image.load(r'data\bg_image.png').convert_alpha()
 
 
 def terminate():
@@ -13,7 +14,9 @@ def terminate():
     exit()
 
 
-def load_level(name, thorn_group, vertical_blocks, horizontal_blocks, hero_group, enemy_group):
+def load_level(name, thorn_group, vertical_blocks, horizontal_blocks, characters):
+    wall_image = pg.Surface([64, 64])
+    wall_image.fill('#0f141f')
     with open(rf'data\{name}') as level:
         for line in level:
             for cell in line.strip('\n'):
