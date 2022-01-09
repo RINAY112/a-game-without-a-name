@@ -5,7 +5,7 @@ pg.init()
 SCREEN_SIZE = 1920, 1080
 screen = pg.display.set_mode(SCREEN_SIZE)
 
-#bg_image = pg.image.load(r'data\bg_image.png')
+# bg_image = pg.image.load(r'data\bg_image.png')
 
 
 def terminate():
@@ -16,13 +16,16 @@ def terminate():
 def load_level(name, thorn_group, vertical_blocks, horizontal_blocks, hero_group, enemy_group):
     with open(rf'data\{name}') as level:
         for line in level:
-            for block in line.strip():
+            for cell in line.strip('\n'):
                 ...
 
 
 def menu():
     menu_image = pg.image.load(r'data\menu_image.jpg').convert()
     menu_font = pg.font.Font(r'data\menu_font.ttf', 150)
+
+    pg.mixer.music.load(r'data\menu.mp3')
+    pg.mixer.music.play(-1)
 
     screen.blit(menu_image, (0, 0))
 

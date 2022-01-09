@@ -13,39 +13,38 @@ class Character(pg.sprite.Sprite):
         self.rect.x, self.rect.y = x, y
         self.x, self.y = x, y
         self.type = None
-        self.right, self.left, self.up = False, False, False
         self.on_ground = True
 
-    def update(self, thorn_group, vertical_blocks, horizontal_blocks, teleport_center, time):
+    def update(self, thorn_group, vertical_blocks, horizontal_blocks, teleport_center, time, right, left, up):
         if pg.sprite.spritecollideany(self, thorn_group):
             return f'kill {self.type}'
         elif self.rect.collidepoint(teleport_center):
             return f'tp {self.type}'
 
-        if self.up:
+        if up:
             if self.on_ground:
                 self.vy -= 10
-            self.up = False
+            up = False
 
         if not self.on_ground:
             self.vy += Character.GRAVITY * time
 
         if block := pg.sprite.spritecollideany(self, vertical_blocks):
             if self.vx > 0:
-                self.rect.right = block.rect.left
+                self.rect.right = block.left
             else:
-                self.rect.left = block.rect.right
+                self.rect.left = block.right
             self.vx = 0
         elif block := pg.sprite.spritecollideany(self, horizontal_blocks):
             if self.vy > 0:
-                self.rect.bottom = block.rect.top
+                self.rect.bottom = block.top
                 self.on_ground = True
             else:
-                self.rect.top = block.rect.bottom
+                self.rect.top = block.bottom
             self.vy = 0
 
-        self.x += self.vx * time * self.right
-        self.x -= self.vx * time * self.left
+        self.x += self.vx * time * right
+        self.x -= self.vx * time * left
         self.y += self.vy * time
 
         self.rect.x, self.rect.y = self.x, self.y
