@@ -1,6 +1,7 @@
 import pygame as pg
 from personages import Hero, Enemy
-from blocks import Floor, Ceiling, RightWall, LeftWall, FloorThorn, CeilingThorn, RightThorn, LeftThorn
+from blocks import (Floor, Ceiling, Wall, RightWall, LeftWall, FloorThorn, CeilingThorn, RightThorn, LeftThorn,
+                    Teleport, UpperLeftCorner, UpperRightCorner, LowerLeftCorner, LowerRightCorner)
 
 pg.init()
 SCREEN_SIZE = 1920, 1080
@@ -14,13 +15,47 @@ def terminate():
     exit()
 
 
-def load_level(name, thorn_group, vertical_blocks, horizontal_blocks, characters):
+def load_level(name, thorns, vertical_blocks, horizontal_blocks, characters, all_sprites):
+    thorns.clear(), vertical_blocks.clear(), horizontal_blocks.clear(), characters.clear(), all_sprites.clear()
     wall_image = pg.Surface([64, 64])
     wall_image.fill('#0f141f')
     with open(rf'data\{name}') as level:
-        for line in level:
-            for cell in line.strip('\n'):
+        for i, line in enumerate(level):
+            for j, cell in enumerate(line.strip('\n')):
+                if cell == '▢':
+                    Wall(j * 64, i * 64, all_sprites)
+                elif cell == '↦':
+                    LeftThorn(j * 64, i * 64, all_sprites, thorns)
+                elif cell == '↤':
+                    RightThorn(j * 64, i * 64, all_sprites, thorns)
+                elif cell == '↧':
+                    CeilingThorn(j * 64, i * 64, all_sprites, thorns)
+                elif cell == '↥':
+                    FloorThorn(j * 64, i * 64, all_sprites, thorns)
+                elif cell == '→':
+                    LeftWall(j * 64, i * 64, all_sprites, vertical_blocks)
+                elif cell == '←':
+                    RightWall(j * 64, i * 64, all_sprites, vertical_blocks)
+                elif cell == '↑':
+                    Floor(j * 64, i * 64, all_sprites, horizontal_blocks)
+                elif cell == '↓':
+                    Ceiling(j * 64, i * 64, all_sprites, horizontal_blocks)
+                elif cell == '↘':
+                    UpperLeftCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '↙':
+                    UpperRightCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '↖':
+                    LowerRightCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '↗':
+                    LowerLeftCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '▮':
+                    teleport = Teleport(j * 64, i * 64, all_sprites)
+                elif cell == '@':
+                    Hero(j * 64, i * 64, all_sprites, characters)
+                elif cell == '0':
+                    Enemy(j * 64, i * 64, all_sprites, characters)
                 ...
+    return teleport.rect.center
 
 
 def menu():
@@ -55,11 +90,15 @@ def menu():
         pg.display.flip()
 
 
+all_groups = thorns, vertical_blocks, horizontal_blocks, characters, all_sprites = tuple(
+    [pg.sprite.Group() for _ in range(5)]
+)
+
+
 def level0():
-    ...
+    load_level('level0.txt', *all_groups)
 
 
 menu()
-
 
 pg.quit()
