@@ -74,7 +74,7 @@ def load_level(name, thorns, vertical_blocks, horizontal_blocks, characters, all
 
 
 def menu():
-    menu_image = pg.image.load(r'data\menu_image.jpg').convert()
+    menu_image = pg.image.load(r'data\menu.jpg').convert()
     menu_font = pg.font.Font(r'data\menu_font.ttf', 150)
 
     pg.mixer.music.load(r'data\menu.mp3')
