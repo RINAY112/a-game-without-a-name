@@ -25,8 +25,7 @@ class Floor(Block):
 
 
 class Wall(Block):
-    image = pg.Surface([64, 64])
-    image.fill('#0f141f')
+    image = pg.image.load(r'data\wall.png').convert_alpha()
 
 
 class LeftWall(Block):
@@ -38,7 +37,7 @@ class RightWall(Block):
 
 
 class FloorThorn(Block):
-    image = pg.transform.scale(pg.image.load(r'data\thorn.png').convert_alpha(), (64, 64))
+    image = pg.image.load(r'data\thorn.png').convert_alpha()
 
 
 class CeilingThorn(Block):
@@ -53,20 +52,36 @@ class LeftThorn(Block):
     image = pg.transform.flip(pg.transform.rotate(FloorThorn.image, 90), True, False)
 
 
-class UpperLeftCorner(Block):
-    image = pg.image.load(r'data\upper_left_corner.png').convert_alpha()
+class LeftOuterUpperCorner(Block):
+    image = pg.image.load(r'data\left_outer_upper_corner.png').convert_alpha()
 
 
-class UpperRightCorner(Block):
-    image = pg.transform.flip(UpperLeftCorner.image, True, False)
+class RightOuterUpperCorner(Block):
+    image = pg.transform.flip(LeftOuterUpperCorner.image, True, False)
 
 
-class LowerRightCorner(Block):
-    image = pg.transform.flip(UpperRightCorner.image, False, True)
+class RightOuterLowerCorner(Block):
+    image = pg.transform.flip(RightOuterUpperCorner.image, False, True)
 
 
-class LowerLeftCorner(Block):
-    image = pg.transform.flip(LowerRightCorner.image, True, False)
+class LeftOuterLowerCorner(Block):
+    image = pg.transform.flip(RightOuterLowerCorner.image, True, False)
+
+
+class LeftInnerUpperCorner(Block):
+    image = pg.image.load(r'data\left_inner_upper_corner.png').convert_alpha()
+
+
+class RightInnerUpperCorner(Block):
+    image = pg.transform.flip(LeftInnerUpperCorner.image, True, False)
+
+
+class LeftInnerLowerCorner(Block):
+    image = pg.image.load(r'data\left_inner_lower_corner.png')
+
+
+class RightInnerLowerCorner(Block):
+    image = pg.transform.flip(LeftInnerLowerCorner.image, True, False)
 
 
 class Teleport(Block):
@@ -74,7 +89,6 @@ class Teleport(Block):
 
     def __init__(self, x, y, *groups):
         rect = Teleport.image.get_rect()
-
         super().__init__(x, y - rect.h + 64, w=rect.w, h=rect.h, *groups)
 
 

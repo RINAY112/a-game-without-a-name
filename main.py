@@ -1,7 +1,9 @@
 import pygame as pg
 from personages import Hero, Enemy
 from blocks import (Floor, Ceiling, Wall, RightWall, LeftWall, FloorThorn, CeilingThorn, RightThorn, LeftThorn,
-                    Teleport, UpperLeftCorner, UpperRightCorner, LowerLeftCorner, LowerRightCorner, Button, Door)
+                    Teleport, LeftOuterUpperCorner, RightOuterUpperCorner, RightOuterLowerCorner,
+                    LeftOuterLowerCorner, LeftInnerUpperCorner, RightInnerUpperCorner,
+                    RightInnerLowerCorner, LeftInnerLowerCorner, Button, Door,)
 from particles import Blood
 
 pg.init()
@@ -36,13 +38,13 @@ def load_level(name, thorns, vertical_blocks, horizontal_blocks, characters, all
                 if cell == '▢':
                     Wall(j * 64, i * 64, all_sprites)
                 elif cell == '↦':
-                    LeftThorn(j * 64, i * 64, all_sprites, thorns)
+                    LeftThorn(j * 64 - 16, i * 64, all_sprites, thorns)
                 elif cell == '↤':
-                    RightThorn(j * 64, i * 64, all_sprites, thorns)
+                    RightThorn(j * 64 + 16, i * 64, all_sprites, thorns)
                 elif cell == '↧':
-                    CeilingThorn(j * 64, i * 64, all_sprites, thorns)
+                    CeilingThorn(j * 64, i * 64 - 16, all_sprites, thorns)
                 elif cell == '↥':
-                    FloorThorn(j * 64, i * 64, all_sprites, thorns)
+                    FloorThorn(j * 64, i * 64 + 16, all_sprites, thorns)
                 elif cell == '→':
                     LeftWall(j * 64, i * 64, all_sprites, vertical_blocks)
                 elif cell == '←':
@@ -53,13 +55,13 @@ def load_level(name, thorns, vertical_blocks, horizontal_blocks, characters, all
                 elif cell == '↓':
                     Ceiling(j * 64, i * 64, all_sprites, horizontal_blocks)
                 elif cell == '↘':
-                    UpperLeftCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                    LeftOuterUpperCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
                 elif cell == '↙':
-                    UpperRightCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                    RightOuterUpperCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
                 elif cell == '↖':
-                    LowerRightCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                    RightOuterLowerCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
                 elif cell == '↗':
-                    LowerLeftCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                    LeftOuterLowerCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
                 elif cell == '▮':
                     teleport = Teleport(j * 64, i * 64 + 8, all_sprites)
                 elif cell == '@':
@@ -70,6 +72,16 @@ def load_level(name, thorns, vertical_blocks, horizontal_blocks, characters, all
                     button = Button(j * 64, i * 64, all_sprites)
                 elif cell == '|':
                     door = Door(j * 64, i * 64, all_sprites, vertical_blocks)
+                elif cell == '⤥':
+                    LeftInnerUpperCorner(j * 64, i * 64 , all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '⤦':
+                    RightInnerUpperCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '⤣':
+                    RightInnerLowerCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+                elif cell == '⤤':
+                    LeftInnerLowerCorner(j * 64, i * 64, all_sprites, vertical_blocks, horizontal_blocks)
+
+    all_sprites.add(hero), all_sprites.add(enemy)
     return teleport.rect.center, hero, enemy, button, door
 
 
@@ -119,10 +131,8 @@ def level0():
     global darkness_visibility, restart_level, pass_level
     right, left, jump = False, False, False
     particles = pg.sprite.Group()
-    pg.mixer.music.play(-1)
 
     tp_center, hero, enemy, button, door = load_level('level0.txt', *all_groups)
-    all_sprites.add(hero), all_sprites.add(enemy)
 
     while True:
         for event in pg.event.get():
@@ -220,10 +230,8 @@ def level1():
     global darkness_visibility, restart_level, pass_level
     right, left, jump = False, False, False
     particles = pg.sprite.Group()
-    pg.mixer.music.play(-1)
 
     tp_center, hero, enemy, button, door = load_level('level1.txt', *all_groups)
-    all_sprites.add(hero), all_sprites.add(enemy)
 
     while True:
         for event in pg.event.get():

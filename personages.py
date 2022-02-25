@@ -16,7 +16,6 @@ class Character(pg.sprite.Sprite):
         self.vx, self.vy = 0, 0
         self.rect = pg.Rect(x, y, 64, 64)
         self.x, self.y = x, y
-        self.type = None
         self.on_ground = True
         self.direction = direction
         self.action, self.current_frame, self.frame_time = 0, 0, 0
